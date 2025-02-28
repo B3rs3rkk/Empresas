@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import User from "../usuarios/usuario.model.js"
+import User from "../usuarios/usuarios.model.js"
 
 export const validateJWT = async (req, res, next) => {
     try{
