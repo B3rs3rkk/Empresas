@@ -25,3 +25,4 @@ export const eliminarCategoriaValidator = [
     validateFields,
     handleErrors
 ]
+// comment
