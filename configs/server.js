@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { dbConnection } from "./mongo.js";
 import authRoutes from "../src/auth/auth.routes.js";
 import usuarioRoutes from "../src/usuarios/usuarios.routes.js";
+//import categoriaRoutes from "../src/categorias/categoria.routes.js"
 import { createDefaultAdmin } from "./admin.js";
 
 
@@ -19,6 +20,7 @@ const middlewares = (app) => {
 const routes = (app) => {
     app.use("/admn/v1/auth", authRoutes);
     app.use("/admn/v1/usuarios", usuarioRoutes);
+    //app.use("/admn/v1/categorias", categoriaRoutes);
 }
 
 const conectarDB = async () => {
