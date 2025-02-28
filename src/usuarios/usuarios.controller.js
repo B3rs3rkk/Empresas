@@ -1,4 +1,4 @@
-import User from "../usuarios/usuarios.model.js";
+import Usuario from "../usuarios/usuarios.model.js";
 import { hash, verify } from "argon2";
 
 export const updatePassword = async (req, res) => {
@@ -15,9 +15,9 @@ export const updatePassword = async (req, res) => {
             });
         }
 
-        const user = await User.findById(usuario._id);
+        const usuarios = await Usuario.findById(usuario._id);
 
-        const matchOldAndNewPassword = await verify(user.password, newPassword);
+        const matchOldAndNewPassword = await verify(usuarios.password, newPassword);
 
         if (matchOldAndNewPassword) {
             return res.status(400).json({
@@ -28,7 +28,7 @@ export const updatePassword = async (req, res) => {
 
         const encryptedPassword = await hash(newPassword);
 
-        await User.findByIdAndUpdate(usuario._id, { password: encryptedPassword }, { new: true });
+        await Usuario.findByIdAndUpdate(usuario._id, { password: encryptedPassword }, { new: true });
 
         return res.status(200).json({
             success: true,
@@ -47,16 +47,17 @@ export const updateMe = async (req, res) => {
     try {
         const { usuario } = req;
         const data = req.body;
+        
 
-        const user = await User.findByIdAndUpdate(usuario._id, data, { new: true });
-
+        const user = await Usuario.findByIdAndUpdate(usuario._id, data, { new: true });
+        console.log(user);
         res.status(200).json({
             success: true,
             msg: "Usuario actualizado",
             user: user,
         });
 
-        console.log(user);
+
     } catch (err) {
         res.status(500).json({
             success: false,
@@ -71,7 +72,7 @@ export const updateUser = async (req, res) => {
         const { uid } = req.params;
         const data = req.body;
 
-        const user = await User.findById(uid);
+        const user = await Usuario.findById(uid);
 
         if (!user) {
             return res.status(400).json({
@@ -87,7 +88,7 @@ export const updateUser = async (req, res) => {
             });
         }
 
-        const updatedUser = await User.findByIdAndUpdate(uid, data, { new: true });
+        const updatedUser = await Usuario.findByIdAndUpdate(uid, data, { new: true });
 
         res.status(200).json({
             success: true,
@@ -103,30 +104,11 @@ export const updateUser = async (req, res) => {
     }
 };
 
-export const deleteMe = async (req, res) => {
-    try {
-        const { usuario } = req;
-
-        await User.findByIdAndUpdate(usuario, { status: false }, { new: true });
-
-        return res.status(200).json({
-            success: true,
-            message: "Usuario eliminado",
-        });
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            message: "Error al eliminar el usuario",
-            error: err.message,
-        });
-    }
-};
-
 export const deleteUser = async (req, res) => {
     try {
         const { uid } = req.params;
 
-        const user = await User.findById(uid);
+        const user = await Usuario.findById(uid);
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -141,7 +123,7 @@ export const deleteUser = async (req, res) => {
             });
         }
 
-        await User.findByIdAndUpdate(uid, { status: false }, { new: true });
+        await Usuario.findByIdAndUpdate(uid, { status: false }, { new: true });
 
         return res.status(200).json({
             success: true,

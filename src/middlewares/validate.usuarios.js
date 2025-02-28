@@ -3,7 +3,6 @@ import { correoExists, usernameExists } from "../helpers/db-validators.js"
 import { validateFields } from "./validate-fields.js";
 import { handleErrors } from "./handle-errors.js";
 import { validateJWT } from "./validate-jwt.js";
-import { hasRoles } from "./validate-roles.js";
 
 
 export const registerValidator = [
@@ -36,7 +35,6 @@ export const loginValidator = [
 
 export const actaulizarContraseñaValidator = [
     validateJWT,
-    hasRoles("ADMIN_ROLE"),
     body("newPassword").isStrongPassword({
     }),
     validateFields,
@@ -45,7 +43,6 @@ export const actaulizarContraseñaValidator = [
 
 export const actualizatUsuarioValidator = [
     validateJWT,
-    hasRoles("ADMIN_ROLE"),
     body("username").optional().isString().withMessage("Username es en formáto erróneo"),
     body("Email").optional().isEmail().withMessage("No es un email válido"),
     body("Email").optional().custom(correoExists),
@@ -56,7 +53,6 @@ export const actualizatUsuarioValidator = [
 
 export const eliminarUsuarioValidator = [
     validateJWT,
-    hasRoles("ADMIN_ROLE"),
     validateFields,
     handleErrors
 ]
